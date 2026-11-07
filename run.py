@@ -1,17 +1,22 @@
 
-import pandas as pd
+import time
+
 import requests
 from bs4 import BeautifulSoup
 
-# Read in the CSV file
-df = pd.read_csv('paper.csv')
 
 # Define a function to extract paper information from a URL
 def extract_paper_info(url):
     # Make HTTP GET request
     response = requests.get(url)
+    return extract_from_html(response.content)
+
+
+# Parse one page's HTML (bytes or str) into the paper_info row.
+# Split out from extract_paper_info so it can be tested without the network.
+def extract_from_html(html):
     # Parse HTML content
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = BeautifulSoup(html, 'html.parser')
     # Extract paper information
     paper_info = {}
     title_tag = soup.find('title')
@@ -37,20 +42,26 @@ def extract_paper_info(url):
     return paper_info
 
 
+def run_batch(csv_in='paper.csv', csv_out='paper_info.csv'):
+    import pandas as pd
 
-# Iterate over the URLs in the CSV file and extract paper information
-paper_info_list = []
-for url in df['url']:
-    paper_info = extract_paper_info(url)
-    paper_info_list.append(paper_info)
+    # Read in the CSV file
+    df = pd.read_csv(csv_in)
 
-# Convert the list of paper information dictionaries to a pandas DataFrame
-paper_df = pd.DataFrame(paper_info_list)
+    # Iterate over the URLs in the CSV file and extract paper information
+    paper_info_list = []
+    for url in df['url']:
+        paper_info = extract_paper_info(url)
+        paper_info_list.append(paper_info)
 
-# Write the paper information to a new CSV file
-paper_df.to_csv('paper_info.csv', index=False)
+    # Convert the list of paper information dictionaries to a pandas DataFrame
+    paper_df = pd.DataFrame(paper_info_list)
 
-print(""" /$$$$$$$$ /$$$$$$$  /$$      /$$ /$$$$$$$$
+    # Write the paper information to a new CSV file
+    paper_df.to_csv(csv_out, index=False)
+
+
+BANNER = (r""" /$$$$$$$$ /$$$$$$$  /$$      /$$ /$$$$$$$$
 | $$_____/| $$__  $$| $$$    /$$$| $$_____/
 | $$      | $$  \ $$| $$$$  /$$$$| $$      
 | $$$$$   | $$$$$$$/| $$ $$/$$ $$| $$$$$   
@@ -58,10 +69,7 @@ print(""" /$$$$$$$$ /$$$$$$$  /$$      /$$ /$$$$$$$$
 | $$      | $$  \ $$| $$\  $ | $$| $$      
 | $$      | $$  | $$| $$ \/  | $$| $$$$$$$$
 |__/      |__/  |__/|__/     |__/|________/""")
-print ("ThesisFinder By Jesun")
-print ("Version: 1.0")
-import time
-import curses
+
 
 def blink_message(window, message):
     for i in range(5):
@@ -74,6 +82,8 @@ def blink_message(window, message):
         time.sleep(0.5)
 
 def main():
+    import curses  # imported here so the module still imports where curses is missing (Windows)
+
     # Initialize curses
     stdscr = curses.initscr()
     curses.noecho()
@@ -92,4 +102,8 @@ def main():
     curses.endwin()
 
 if __name__ == '__main__':
+    run_batch()
+    print(BANNER)
+    print ("ThesisFinder By Jesun")
+    print ("Version: 1.0")
     main()
