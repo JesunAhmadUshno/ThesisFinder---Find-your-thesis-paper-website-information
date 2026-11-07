@@ -1,0 +1,39 @@
+{
+  "full.html": {
+    "website": "Example Journal of Placeholder Studies | Article",
+    "DOI": "10.0000/example.full",
+    "title": "A Fully Tagged Example Paper",
+    "author": [
+      "Ada Example",
+      "Ben Sample",
+      " Cy Placeholder "
+    ]
+  },
+  "no-authors.html": {
+    "website": "Placeholder Proceedings - Paper 42",
+    "DOI": "10.0000/example.noauthors",
+    "title": "An Example Paper With Authors In A Different Tag",
+    "author": []
+  },
+  "citation-tags.html": {
+    "website": "Sample Letters in Example Science",
+    "DOI": "",
+    "title": "An Example Paper Tagged With citation_* Meta",
+    "author": []
+  },
+  "bare.html": {
+    "website": "Example Repository Landing Page",
+    "DOI": "",
+    "title": "",
+    "author": []
+  },
+  "quoting.html": {
+    "website": "Example Review, Volume 1",
+    "DOI": "10.0000/example.quoting",
+    "title": "Commas, Quotes and Other Example Hazards",
+    "author": [
+      "Hal O'Example",
+      "Ivy Sample"
+    ]
+  }
+}

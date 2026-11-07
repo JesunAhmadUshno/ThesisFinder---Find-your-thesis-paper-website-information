@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Local inputs and outputs of run.py
+/paper.csv
+/paper_info.csv
+
+# site build
+site/node_modules/
+site/dist/
+site/.rubric/
