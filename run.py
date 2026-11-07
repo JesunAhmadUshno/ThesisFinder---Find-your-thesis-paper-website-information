@@ -7,8 +7,12 @@ from bs4 import BeautifulSoup
 
 # Define a function to extract paper information from a URL
 def extract_paper_info(url):
-    # Make HTTP GET request
-    response = requests.get(url)
+    # Make HTTP GET request. A dead or slow URL yields an empty row instead of
+    # stopping the whole batch.
+    try:
+        response = requests.get(url, timeout=15)
+    except requests.RequestException:
+        return extract_from_html('')
     return extract_from_html(response.content)
 
 

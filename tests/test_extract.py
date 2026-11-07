@@ -42,6 +42,11 @@ def test_empty_page_gives_empty_row():
     assert run.extract_from_html('') == {'website': '', 'DOI': '', 'title': '', 'author': []}
 
 
+def test_unreachable_url_gives_empty_row():
+    # .invalid is reserved (RFC 2606) and never resolves, so this fails fast without traffic.
+    assert run.extract_paper_info('http://thesisfinder-test.invalid/') == run.extract_from_html('')
+
+
 def test_batch_csv_matches_known_answer():
     try:
         import pandas  # noqa: F401
